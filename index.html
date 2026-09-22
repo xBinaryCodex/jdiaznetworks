@@ -1,0 +1,834 @@
+<title>Jose Diaz</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink:    '#0A0D12',
+          panel:  '#11151C',
+          panel2: '#161C25',
+          line:   '#232B36',
+          txt:    '#E7ECF3',
+          mute:   '#8E9AAC',
+          signal: '#F0A23C',
+          fiber:  '#46B7A6',
+          alert:  '#E0685E'
+        },
+        fontFamily: {
+          display: ['"IBM Plex Sans Condensed"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          sans:    ['"IBM Plex Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          mono:    ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace']
+        }
+      }
+    }
+  };
+</script>
+
+<style>
+  :root {
+    --ink:    #0A0D12;
+    --panel:  #11151C;
+    --panel2: #161C25;
+    --line:   #232B36;
+    --txt:    #E7ECF3;
+    --mute:   #8E9AAC;
+    --signal: #F0A23C;
+    --fiber:  #46B7A6;
+    --alert:  #E0685E;
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--ink);
+    color: var(--txt);
+    font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: ""; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image:
+      linear-gradient(to right, rgba(142,154,172,.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(142,154,172,.05) 1px, transparent 1px);
+    background-size: 64px 64px;
+    -webkit-mask-image: radial-gradient(ellipse 95% 55% at 50% 0%, #000 35%, transparent 100%);
+            mask-image: radial-gradient(ellipse 95% 55% at 50% 0%, #000 35%, transparent 100%);
+  }
+  body::after {
+    content: ""; position: fixed; top: -220px; right: -160px; width: 700px; height: 700px;
+    z-index: 0; pointer-events: none; border-radius: 9999px;
+    background: radial-gradient(circle, rgba(240,162,60,.09) 0%, rgba(240,162,60,0) 65%);
+  }
+
+  h1, h2, h3, .display {
+    font-family: "IBM Plex Sans Condensed", ui-sans-serif, system-ui, sans-serif;
+    text-wrap: balance;
+    letter-spacing: -0.015em;
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px; font-weight: 500;
+    letter-spacing: .17em; text-transform: uppercase;
+    color: var(--mute);
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    transition: border-color .2s ease, background-color .2s ease;
+  }
+  .card-hover:hover { border-color: rgba(240,162,60,.38); background: var(--panel2); }
+
+  .chip {
+    display: inline-flex; align-items: center;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11.5px; line-height: 1;
+    padding: 5px 8px; border-radius: 5px;
+    color: var(--mute);
+    background: rgba(142,154,172,.07);
+    border: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  .chip-signal { color: var(--signal); border-color: rgba(240,162,60,.30); background: rgba(240,162,60,.08); }
+  .chip-fiber  { color: var(--fiber);  border-color: rgba(70,183,166,.30); background: rgba(70,183,166,.08); }
+
+  .rule-top { border-top: 1px solid var(--line); }
+
+  .led { width: 7px; height: 7px; border-radius: 9999px; background: var(--fiber); box-shadow: 0 0 0 0 rgba(70,183,166,.55); animation: led 2.8s ease-out infinite; }
+  @keyframes led {
+    0%   { box-shadow: 0 0 0 0 rgba(70,183,166,.50); }
+    70%  { box-shadow: 0 0 0 7px rgba(70,183,166,0); }
+    100% { box-shadow: 0 0 0 0 rgba(70,183,166,0); }
+  }
+
+  a, button { transition: color .15s ease, background-color .15s ease, border-color .15s ease; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; border-radius: 4px; }
+
+  .scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .scroll-x::-webkit-scrollbar { height: 6px; }
+  .scroll-x::-webkit-scrollbar-thumb { background: var(--line); border-radius: 9999px; }
+
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .led { animation: none; }
+    *, *::before, *::after { transition-duration: .01ms !important; }
+  }
+</style>
+
+<!-- ===================== MASTHEAD ===================== -->
+<header class="sticky z-30 bg-ink/85 backdrop-blur-md border-b border-line"
+        style="top: env(safe-area-inset-top, 0px);">
+  <div class="mx-auto max-w-6xl px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
+    <a href="#top" class="flex items-center gap-2.5 shrink-0">
+      <span class="led" aria-hidden="true"></span>
+      <span class="font-mono text-[13px] tracking-tight text-txt">jdiaz<span class="text-signal">networks</span></span>
+    </a>
+
+    <nav class="hidden md:flex items-center gap-7 font-mono text-[12.5px] text-mute" aria-label="Sections">
+      <a href="#skills" class="hover:text-txt">skills</a>
+      <a href="#work" class="hover:text-txt">experience</a>
+      <a href="#projects" class="hover:text-txt">projects</a>
+      <a href="#safedays" class="hover:text-txt">safedays</a>
+      <a href="#certifications" class="hover:text-txt">certs</a>
+    </nav>
+
+    <a href="#contact"
+       class="shrink-0 font-mono text-[12.5px] px-3.5 py-1.5 rounded border border-signal/40 text-signal hover:bg-signal/10">
+      contact
+    </a>
+  </div>
+</header>
+
+<main id="top" class="relative z-10">
+
+  <!-- ===================== HERO ===================== -->
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 pt-16 pb-16 sm:pt-24 sm:pb-20">
+    <div class="grid lg:grid-cols-[1.15fr_1fr] gap-12 lg:gap-16 items-start">
+
+      <div>
+        <p class="eyebrow flex items-center gap-2.5">
+          <span class="led" aria-hidden="true"></span>
+          Network Security Engineer &middot; San Antonio, TX
+        </p>
+
+        <h1 class="mt-5 text-5xl sm:text-6xl lg:text-7xl font-bold leading-[0.95] text-txt">
+          Jose Diaz
+        </h1>
+
+        <div class="mt-7 space-y-4 text-lg text-mute max-w-[60ch] leading-relaxed">
+          <p>
+            I've spent ten years building and fixing enterprise networks. Aerospace
+            manufacturing, federal law enforcement, cold storage, a national fiber
+            operator in South Africa. The environments change, the job doesn't: design it
+            so it holds, then figure out why it didn't.
+          </p>
+          <p>
+            Right now I'm the L2 network engineer on Boeing San Antonio's Wi-Fi 6
+            modernization, moving roughly 98 access points off AireOS onto Catalyst 9800
+            without stopping the factory floor. When something repeats more than twice, I
+            write Python for it.
+          </p>
+          <p>
+            I also run <a href="#safedays" class="text-signal underline decoration-signal/35 underline-offset-4 hover:decoration-signal">SafeDays Security</a>,
+            handling network security for small law firms that don't have an IT department.
+          </p>
+        </div>
+
+        <div class="mt-9 flex flex-wrap gap-3">
+          <a href="#projects"
+             class="font-mono text-[13px] px-5 py-2.5 rounded bg-signal text-ink font-semibold hover:bg-signal/90">
+            See the work
+          </a>
+          <a href="mailto:jose@jdiaznetworks.com"
+             class="font-mono text-[13px] px-5 py-2.5 rounded border border-line text-txt hover:border-fiber/50 hover:text-fiber">
+            jose@jdiaznetworks.com
+          </a>
+        </div>
+      </div>
+
+      <!-- Currently: plain facts, no dashboard theatre -->
+      <div class="card p-6 sm:p-7">
+        <p class="eyebrow">Currently</p>
+        <dl class="mt-5 space-y-5 text-[15px]">
+          <div>
+            <dt class="font-mono text-[11.5px] text-mute">ROLE</dt>
+            <dd class="mt-1 text-txt">L2 Network Engineer, Boeing San Antonio</dd>
+            <dd class="text-mute text-[14px]">Contract via AZ Penn LLC, since October 2025</dd>
+          </div>
+          <div>
+            <dt class="font-mono text-[11.5px] text-mute">ON MY DESK</dt>
+            <dd class="mt-1 text-txt">Site-wide Wi-Fi 6 cutover, ~98 CW9166 APs</dd>
+            <dd class="text-mute text-[14px]">First site done in about two months, zero production downtime</dd>
+          </div>
+          <div>
+            <dt class="font-mono text-[11.5px] text-mute">ON THE SIDE</dt>
+            <dd class="mt-1 text-txt">SafeDays Security</dd>
+            <dd class="text-mute text-[14px]">DBA of Diaz Tech &amp; Taste LLC</dd>
+          </div>
+          <div>
+            <dt class="font-mono text-[11.5px] text-mute">STUDYING</dt>
+            <dd class="mt-1 text-txt">B.S. Cloud &amp; Network Engineering, WGU</dd>
+            <dd class="text-mute text-[14px]">AWS track, three courses left, finishing November 2026</dd>
+          </div>
+        </dl>
+
+        <div class="mt-6 pt-5 rule-top flex flex-wrap gap-2">
+          <span class="chip chip-fiber">Open to roles</span>
+          <span class="chip">Army Reserve veteran, 91B</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===================== SKILLS ===================== -->
+  <section id="skills" class="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-20 rule-top scroll-mt-20">
+    <h2 class="text-3xl sm:text-4xl font-semibold text-txt">What I work with</h2>
+    <p class="mt-3 text-mute text-[15.5px] max-w-[58ch]">
+      Ten years of hands-on, sorted by where it lives in the stack.
+    </p>
+
+    <div class="mt-9 grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+      <article class="card card-hover p-5">
+        <h3 class="font-mono text-[12.5px] text-signal tracking-wide">ROUTING &amp; SWITCHING</h3>
+        <div class="mt-4 flex flex-wrap gap-1.5">
+          <span class="chip">Cisco IOS / IOS-XE</span><span class="chip">Arista EOS</span>
+          <span class="chip">BGP</span><span class="chip">VLANs</span><span class="chip">VRF</span>
+          <span class="chip">LACP</span><span class="chip">STP</span><span class="chip">DHCP / DNS</span>
+          <span class="chip">Internet edge</span>
+        </div>
+      </article>
+
+      <article class="card card-hover p-5">
+        <h3 class="font-mono text-[12.5px] text-signal tracking-wide">WIRELESS</h3>
+        <div class="mt-4 flex flex-wrap gap-1.5">
+          <span class="chip">Wi-Fi 6 / 802.11ax</span><span class="chip">Catalyst 9800</span>
+          <span class="chip">AireOS WLC</span><span class="chip">CW9166</span>
+          <span class="chip">Mesh / industrial</span><span class="chip">mGig access</span>
+        </div>
+      </article>
+
+      <article class="card card-hover p-5">
+        <h3 class="font-mono text-[12.5px] text-signal tracking-wide">FIREWALLS &amp; SECURITY</h3>
+        <div class="mt-4 flex flex-wrap gap-1.5">
+          <span class="chip">Palo Alto PAN-OS</span><span class="chip">Panorama</span>
+          <span class="chip">App-ID / User-ID</span><span class="chip">GlobalProtect</span>
+          <span class="chip">Cisco FTD / FMC</span><span class="chip">ASA</span>
+          <span class="chip">FortiGate</span><span class="chip">pfSense</span>
+          <span class="chip">Snort / Suricata</span><span class="chip">IPsec / SSL VPN</span>
+          <span class="chip">Segmentation</span><span class="chip">NIST</span>
+        </div>
+      </article>
+
+      <article class="card card-hover p-5">
+        <h3 class="font-mono text-[12.5px] text-signal tracking-wide">AUTOMATION &amp; SCRIPTING</h3>
+        <div class="mt-4 flex flex-wrap gap-1.5">
+          <span class="chip">Python</span><span class="chip">Netmiko</span>
+          <span class="chip">REST APIs</span><span class="chip">PowerShell</span>
+          <span class="chip">Bash</span><span class="chip">SQL / PostgreSQL</span>
+          <span class="chip">Git</span>
+        </div>
+      </article>
+
+      <article class="card card-hover p-5">
+        <h3 class="font-mono text-[12.5px] text-signal tracking-wide">SYSTEMS &amp; CLOUD</h3>
+        <div class="mt-4 flex flex-wrap gap-1.5">
+          <span class="chip">AWS</span><span class="chip">Azure VNets / NSGs</span>
+          <span class="chip">Windows Server</span><span class="chip">Active Directory</span>
+          <span class="chip">M365 / Entra ID</span><span class="chip">VMware</span>
+          <span class="chip">Proxmox</span><span class="chip">EVE-NG</span>
+          <span class="chip">Linux</span>
+        </div>
+      </article>
+
+      <article class="card card-hover p-5">
+        <h3 class="font-mono text-[12.5px] text-signal tracking-wide">DESIGN &amp; OPERATIONS</h3>
+        <div class="mt-4 flex flex-wrap gap-1.5">
+          <span class="chip">LAN / WAN design</span><span class="chip">Migration &amp; cutover</span>
+          <span class="chip">Rollback / failover</span><span class="chip">Capacity planning</span>
+          <span class="chip">Network diagrams</span><span class="chip">ITIL v4</span>
+          <span class="chip">ServiceNow</span><span class="chip">Change management</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===================== TROUBLESHOOTING STORIES ===================== -->
+  <section class="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-20 rule-top">
+    <h2 class="text-3xl sm:text-4xl font-semibold text-txt">Three things I tracked down</h2>
+    <p class="mt-3 text-mute text-[15.5px] max-w-[62ch]">
+      A resume bullet says I troubleshoot. These are what that actually looked like at Boeing.
+    </p>
+
+    <div class="mt-9 grid md:grid-cols-3 gap-4">
+
+      <article class="card p-6">
+        <span class="chip chip-signal">Deployment blocked</span>
+        <h3 class="mt-4 text-xl font-semibold text-txt">Every AP failed to onboard</h3>
+        <p class="mt-3 text-[15px] text-mute leading-relaxed">
+          The whole fleet refused to join. I walked the CDP neighbor table hop by hop and
+          found new subnets that had never been added to the routing domain config. The
+          APs were fine. Nothing could route back to them.
+        </p>
+      </article>
+
+      <article class="card p-6">
+        <span class="chip chip-signal">Recurring outage</span>
+        <h3 class="mt-4 text-xl font-semibold text-txt">Ports err-disabling at shift start</h3>
+        <p class="mt-3 text-[15px] text-mute leading-relaxed">
+          Same time every morning. It was DHCP snooping rate limits tripping on the burst
+          of first-shift clients, all of it funneling through one mesh-backhauled switch
+          feeding 12 downstream APs. Re-engineered the limits for the real traffic shape.
+          It hasn't come back.
+        </p>
+      </article>
+
+      <article class="card p-6">
+        <span class="chip chip-signal">Bad diagnosis</span>
+        <h3 class="mt-4 text-xl font-semibold text-txt">VLAN flapping blamed on STP</h3>
+        <p class="mt-3 text-[15px] text-mute leading-relaxed">
+          Spanning tree was the accepted answer before I got there. I eliminated it the
+          slow way: swapped optics, moved ports, diffed the config against a peer switch
+          until only the hardware was left standing. It was the switch. Replacement fixed
+          it for good.
+        </p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===================== EXPERIENCE ===================== -->
+  <section id="work" class="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-20 rule-top scroll-mt-20">
+    <h2 class="text-3xl sm:text-4xl font-semibold text-txt">Where I've worked</h2>
+
+    <div class="mt-9 grid gap-4">
+
+      <article class="card p-6 sm:p-7 grid lg:grid-cols-[minmax(0,15rem)_1fr] gap-5 lg:gap-10">
+        <div>
+          <h3 class="text-xl font-semibold text-txt">Boeing</h3>
+          <p class="mt-1 text-[15px] text-mute">L2 Network Engineer</p>
+          <p class="mt-2 font-mono text-[12px] text-mute">Oct 2025 &ndash; present</p>
+          <p class="font-mono text-[12px] text-mute">San Antonio, TX</p>
+        </div>
+        <ul class="space-y-2.5 text-[15px] text-mute">
+          <li class="flex gap-3"><span class="text-signal font-mono shrink-0">&rsaquo;</span><span>Running the site-wide Wi-Fi 6 modernization: roughly 98 CW9166 APs, AireOS 5500 to Catalyst 9800 IOS-XE, with mGig access switching underneath. First site landed in about two months with no downtime to manufacturing.</span></li>
+          <li class="flex gap-3"><span class="text-signal font-mono shrink-0">&rsaquo;</span><span>Proposed keeping the legacy APs live as a failover tier through the cutover, so there was no rollback to execute if it went sideways. Ran the change on a Saturday window.</span></li>
+          <li class="flex gap-3"><span class="text-signal font-mono shrink-0">&rsaquo;</span><span>Automated the activation with a ~270-command script covering AP naming, tag assignment and admin-state sequencing. Took it from 30-plus minutes of typing to under two, with no config errors.</span></li>
+          <li class="flex gap-3"><span class="text-signal font-mono shrink-0">&rsaquo;</span><span>Own monthly preventive maintenance on about 30 production switches, with status reporting twice a week. Currently moving that reporting into Python.</span></li>
+          <li class="flex gap-3"><span class="text-signal font-mono shrink-0">&rsaquo;</span><span>Scope has since grown into building 91-400, plus network planning for new construction at 91-822.</span></li>
+        </ul>
+      </article>
+
+      <article class="card p-6 sm:p-7 grid lg:grid-cols-[minmax(0,15rem)_1fr] gap-5 lg:gap-10">
+        <div>
+          <h3 class="text-xl font-semibold text-txt">Switchovr</h3>
+          <p class="mt-1 text-[15px] text-mute">Network Engineer</p>
+          <p class="mt-2 font-mono text-[12px] text-mute">Dec 2024 &ndash; Oct 2025</p>
+          <p class="font-mono text-[12px] text-mute">LinkAfrica / CloudCover.it</p>
+        </div>
+        <ul class="space-y-2.5 text-[15px] text-mute">
+          <li class="flex gap-3"><span class="text-signal font-mono shrink-0">&rsaquo;</span><span>Tier 2/3 fiber support for LinkAfrica, the largest fiber network operator in South Africa, working multi-wavelength service-affecting outages across a national footprint.</span></li>
+          <li class="flex gap-3"><span class="text-signal font-mono shrink-0">&rsaquo;</span><span>Optical parameter analysis: transmit and receive power, wavelength management, DWDM drop troubleshooting. Separating equipment failure from fiber degradation from a bad patch is most of the work.</span></li>
+          <li class="flex gap-3"><span class="text-signal font-mono shrink-0">&rsaquo;</span><span>Coordinated with international NOC teams to restore service after failed maintenance windows.</span></li>
+        </ul>
+      </article>
+
+      <article class="card p-6 sm:p-7 grid lg:grid-cols-[minmax(0,15rem)_1fr] gap-5 lg:gap-10">
+        <div>
+          <h3 class="text-xl font-semibold text-txt">NEC Corporation of America</h3>
+          <p class="mt-1 text-[15px] text-mute">Network Field Engineer</p>
+          <p class="mt-2 font-mono text-[12px] text-mute">Aug 2018 &ndash; Nov 2024</p>
+          <p class="font-mono text-[12px] text-mute">San Antonio, TX</p>
+        </div>
+        <ul class="space-y-2.5 text-[15px] text-mute">
+          <li class="flex gap-3"><span class="text-signal font-mono shrink-0">&rsaquo;</span><span>Ran LAN, WAN, VPN, DNS, DHCP and internet-edge services for state and federal government clients across multiple sites, as tier-2/3 escalation for the complicated network and firewall problems.</span></li>
+          <li class="flex gap-3"><span class="text-signal font-mono shrink-0">&rsaquo;</span><span>Kept biometric identity systems up for Texas DPS, the U.S. Secret Service and Idaho State Police at 99%+ availability. When those go down, public services stop.</span></li>
+          <li class="flex gap-3"><span class="text-signal font-mono shrink-0">&rsaquo;</span><span>Migrated firewall policy from legacy ASA to FTD in production law-enforcement environments with no unplanned downtime, and managed FTD deployments and policy through FMC.</span></li>
+          <li class="flex gap-3"><span class="text-signal font-mono shrink-0">&rsaquo;</span><span>Wrote Python and SQL tooling for firewall policy auditing and compliance reporting, cutting audit cycle time by about 60%. Bash automation for diagnostics and recovery took roughly 40% off incident resolution.</span></li>
+        </ul>
+      </article>
+
+      <article class="card p-6 sm:p-7 grid lg:grid-cols-[minmax(0,15rem)_1fr] gap-5 lg:gap-10">
+        <div>
+          <h3 class="text-xl font-semibold text-txt">HiTechnology</h3>
+          <p class="mt-1 text-[15px] text-mute">Network Administrator</p>
+          <p class="mt-2 font-mono text-[12px] text-mute">Oct 2016 &ndash; Jul 2019</p>
+          <p class="font-mono text-[12px] text-mute">San Antonio, TX</p>
+        </div>
+        <ul class="space-y-2.5 text-[15px] text-mute">
+          <li class="flex gap-3"><span class="text-signal font-mono shrink-0">&rsaquo;</span><span>Designed and delivered a greenfield network for Hidalgo Cold Storage supporting 90+ devices across IT, physical security and OT, including segmentation between the business and operational sides of an industrial plant.</span></li>
+          <li class="flex gap-3"><span class="text-signal font-mono shrink-0">&rsaquo;</span><span>Built Palo Alto HA clusters with App-ID, User-ID and Content-ID, managed centrally through Panorama across multi-site deployments in the U.S. and Mexico for cross-border logistics operators.</span></li>
+          <li class="flex gap-3"><span class="text-signal font-mono shrink-0">&rsaquo;</span><span>Deployed GlobalProtect for secure remote access for an international workforce, and built Python/SQL monitoring for performance analytics and security event correlation.</span></li>
+        </ul>
+      </article>
+
+      <article class="card p-6 sm:p-7 grid lg:grid-cols-[minmax(0,15rem)_1fr] gap-5 lg:gap-10">
+        <div>
+          <h3 class="text-xl font-semibold text-txt">Focus Restaurant Solutions</h3>
+          <p class="mt-1 text-[15px] text-mute">Application Support Specialist</p>
+          <p class="mt-2 font-mono text-[12px] text-mute">Jun 2015 &ndash; Oct 2016</p>
+        </div>
+        <ul class="space-y-2.5 text-[15px] text-mute">
+          <li class="flex gap-3"><span class="text-signal font-mono shrink-0">&rsaquo;</span><span>Tier-1/2 support, system upgrades and compliance audits across multi-site restaurant operations. Where I started writing Python to stop repeating myself.</span></li>
+        </ul>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===================== PROJECTS ===================== -->
+  <section id="projects" class="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-20 rule-top scroll-mt-20">
+    <h2 class="text-3xl sm:text-4xl font-semibold text-txt">Projects</h2>
+    <p class="mt-3 text-mute text-[15.5px] max-w-[60ch]">
+      Automation I've written and networks I've built. The tools came out of problems I
+      had in front of me, not from looking for something to automate.
+    </p>
+
+    <div class="mt-9 grid gap-4">
+
+      <article class="card card-hover p-6 sm:p-8">
+        <div class="flex flex-wrap items-center gap-3">
+          <span class="chip chip-signal">Open source</span>
+          <span class="font-mono text-[12px] text-mute">python &middot; netmiko</span>
+        </div>
+        <h3 class="mt-4 text-2xl font-semibold text-txt">Cisco Troubleshooting Toolkit</h3>
+        <p class="mt-3 text-[15.5px] text-mute leading-relaxed max-w-[68ch]">
+          Multi-vendor device diagnostics in Python. It standardizes health-check execution
+          across IOS, IOS-XE and ASA, then exports the result as JSON or text so it can go
+          straight into a ticket or a report. It's public, and other people have
+          contributed to it.
+        </p>
+        <div class="mt-5 flex flex-wrap items-center gap-3">
+          <a href="https://github.com/xBinaryCodex/cisco-troubleshooting-toolkit"
+             target="_blank" rel="noopener noreferrer"
+             class="font-mono text-[12.5px] px-4 py-2 rounded border border-signal/40 text-signal hover:bg-signal/10">
+            github.com/xBinaryCodex/cisco-troubleshooting-toolkit
+          </a>
+        </div>
+      </article>
+
+      <div class="grid lg:grid-cols-2 gap-4">
+
+        <article class="card card-hover p-6">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="chip chip-fiber">Automation</span>
+            <span class="font-mono text-[12px] text-mute">python &middot; ssh</span>
+          </div>
+          <h3 class="mt-4 text-xl font-semibold text-txt">AP discovery and audit tool</h3>
+          <p class="mt-3 text-[15px] text-mute leading-relaxed">
+            Built at Boeing because a site-wide AP audit took about three hours by hand. It
+            logs in over SSH, correlates CDP neighbors against ARP and CAM tables to work
+            out what is plugged in where, and writes it to a persistent Excel workbook.
+            Same audit now runs in under ten minutes.
+          </p>
+          <div class="mt-5 flex flex-wrap gap-1.5">
+            <span class="chip">Python</span><span class="chip">Netmiko</span>
+            <span class="chip">CDP / ARP / CAM</span><span class="chip">Excel export</span>
+          </div>
+        </article>
+
+        <article class="card card-hover p-6">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="chip chip-fiber">Automation</span>
+            <span class="font-mono text-[12px] text-mute">ios-xe &middot; cli</span>
+          </div>
+          <h3 class="mt-4 text-xl font-semibold text-txt">Wi-Fi 6 cutover activation script</h3>
+          <p class="mt-3 text-[15px] text-mute leading-relaxed">
+            About 270 commands generated ahead of the maintenance window: AP naming, tag
+            assignment, and admin-state sequencing in the right order. Cutover activation
+            dropped from over 30 minutes of live typing to under two, and the errors that
+            come with typing at 2am went away with it.
+          </p>
+          <div class="mt-5 flex flex-wrap gap-1.5">
+            <span class="chip">Catalyst 9800</span><span class="chip">IOS-XE</span>
+            <span class="chip">Config generation</span>
+          </div>
+        </article>
+
+        <article class="card card-hover p-6">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="chip chip-fiber">Firewall &amp; segmentation</span>
+            <span class="font-mono text-[12px] text-mute">fortigate 100f &middot; fortios 7.6</span>
+          </div>
+          <h3 class="mt-4 text-xl font-semibold text-txt">My own edge firewall</h3>
+          <p class="mt-3 text-[15px] text-mute leading-relaxed">
+            I run the edge for my household and my business off a FortiGate 100F. Separate
+            zones with least-privilege policy between them, traffic shaping for the
+            latency-sensitive stuff, and self-hosted services published through VIPs and
+            inbound policy with real certificate management. I handle the firmware
+            lifecycle and backups myself, which is the part most people skip.
+          </p>
+
+          <div class="mt-5 scroll-x">
+            <table class="w-full min-w-[400px] text-left font-mono text-[12.5px] border-collapse">
+              <caption class="sr-only">Zone segmentation and inter-zone policy</caption>
+              <thead>
+                <tr class="text-mute border-b border-line">
+                  <th scope="col" class="py-2 pr-4 font-medium">Zone</th>
+                  <th scope="col" class="py-2 pr-4 font-medium">Holds</th>
+                  <th scope="col" class="py-2 font-medium">Inter-zone</th>
+                </tr>
+              </thead>
+              <tbody class="text-mute">
+                <tr class="border-b border-line/60"><td class="py-2 pr-4 text-txt">USER</td><td class="py-2 pr-4">Workstations, phones</td><td class="py-2"><span class="text-fiber">permit</span> to server</td></tr>
+                <tr class="border-b border-line/60"><td class="py-2 pr-4 text-txt">IOT</td><td class="py-2 pr-4">Cameras, smart devices</td><td class="py-2"><span class="text-alert">deny</span> east-west</td></tr>
+                <tr class="border-b border-line/60"><td class="py-2 pr-4 text-txt">SERVER</td><td class="py-2 pr-4">Nextcloud, inventory app</td><td class="py-2"><span class="text-signal">VIP</span> inbound only</td></tr>
+                <tr><td class="py-2 pr-4 text-txt">BUSINESS</td><td class="py-2 pr-4">Company workloads</td><td class="py-2"><span class="text-alert">deny</span> from user</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+
+        <article class="card card-hover p-6">
+          <div class="flex flex-wrap items-center gap-3">
+            <span class="chip chip-fiber">Greenfield build</span>
+            <span class="font-mono text-[12px] text-mute">it &middot; physical security &middot; ot</span>
+          </div>
+          <h3 class="mt-4 text-xl font-semibold text-txt">Hidalgo Cold Storage network</h3>
+          <p class="mt-3 text-[15px] text-mute leading-relaxed">
+            A complete network from nothing for an industrial cold storage facility, 90+
+            devices spanning IT, physical security and OT. The interesting constraint was
+            keeping the business network and the operational network genuinely separated
+            while the same staff had to work across both.
+          </p>
+          <div class="mt-5 flex flex-wrap gap-1.5">
+            <span class="chip">Segmentation</span><span class="chip">Capacity planning</span>
+            <span class="chip">Cutover</span><span class="chip">Documentation</span>
+          </div>
+        </article>
+
+      </div>
+
+      <article class="card card-hover p-6">
+        <div class="flex flex-wrap items-center gap-3">
+          <span class="chip chip-fiber">Compliance tooling</span>
+          <span class="font-mono text-[12px] text-mute">python &middot; sql</span>
+        </div>
+        <h3 class="mt-4 text-xl font-semibold text-txt">Firewall policy audit and compliance reporting</h3>
+        <p class="mt-3 text-[15px] text-mute leading-relaxed max-w-[70ch]">
+          Written at NEC for government environments where firewall policy has to be
+          audited on a schedule and the evidence has to hold up. Python pulls and parses
+          the policy, SQL stores and diffs it over time, and the report comes out the other
+          end. Took roughly 60% off the audit cycle.
+        </p>
+        <div class="mt-5 flex flex-wrap gap-1.5">
+          <span class="chip">Python</span><span class="chip">PostgreSQL</span>
+          <span class="chip">Cisco FTD / FMC</span><span class="chip">NIST</span>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===================== SAFEDAYS SECURITY ===================== -->
+  <section id="safedays" class="relative py-16 sm:py-24 border-y border-line bg-panel/60 scroll-mt-20">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <div class="grid lg:grid-cols-[1fr_1fr] gap-12 lg:gap-16 items-start">
+
+        <div>
+          <div class="flex items-center gap-4">
+            <svg viewBox="0 0 44 50" width="40" height="45" aria-hidden="true" class="shrink-0">
+              <path d="M22 2 L41 10 V25 C41 36 32 44 22 48 C12 44 3 36 3 25 V10 Z"
+                    fill="rgba(240,162,60,.08)" stroke="#F0A23C" stroke-width="1.6" stroke-linejoin="round"/>
+              <path d="M14 24 l6 6 l11 -13" fill="none" stroke="#46B7A6" stroke-width="2.4"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div>
+              <h2 class="text-3xl sm:text-4xl font-semibold text-txt leading-tight">SafeDays Security</h2>
+              <p class="mt-1 font-mono text-[12px] text-mute">Founder &middot; DBA of Diaz Tech &amp; Taste LLC</p>
+            </div>
+          </div>
+
+          <div class="mt-7 space-y-4 text-[15.5px] text-mute leading-relaxed max-w-[58ch]">
+            <p>
+              Network security consulting for small law firms. A two-attorney practice
+              holds the same client confidences a large firm does, with none of the IT
+              staff, and the usual answer they get is a managed service bundle that nobody
+              explains to them.
+            </p>
+            <p>
+              My methodology maps to Texas Disciplinary Rule 1.05 and ABA Formal Opinion
+              477R, so the work lines up with the confidentiality obligations a firm is
+              already under rather than a generic checklist. That also means the
+              deliverable is something a managing partner can read.
+            </p>
+            <p>
+              The technical side is what I do everywhere else: segment the network, write
+              firewall policy that denies by default, get remote access under control, and
+              make sure the backups actually restore.
+            </p>
+          </div>
+
+          <div class="mt-8">
+            <a href="mailto:jose@jdiaznetworks.com?subject=SafeDays%20Security%20inquiry"
+               class="inline-flex font-mono text-[13px] px-5 py-2.5 rounded bg-signal text-ink font-semibold hover:bg-signal/90">
+              Ask about an assessment
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <p class="eyebrow">How an engagement runs</p>
+          <ol class="mt-5 space-y-3">
+            <li class="card p-5 flex gap-5">
+              <span class="font-mono text-[12.5px] text-signal pt-0.5 tabular-nums">01</span>
+              <div>
+                <h3 class="text-[16px] font-semibold text-txt">Find out what's actually exposed</h3>
+                <p class="mt-1.5 text-[14.5px] text-mute leading-relaxed">
+                  Firewall rule review, wireless audit, a look at how the network is (or
+                  isn't) divided up. You get it written down in plain language, ordered by
+                  what a stranger would reach first.
+                </p>
+              </div>
+            </li>
+            <li class="card p-5 flex gap-5">
+              <span class="font-mono text-[12.5px] text-signal pt-0.5 tabular-nums">02</span>
+              <div>
+                <h3 class="text-[16px] font-semibold text-txt">Separate what shouldn't touch</h3>
+                <p class="mt-1.5 text-[14.5px] text-mute leading-relaxed">
+                  Case files, staff machines, the printer everyone forgot is on the
+                  internet, guest Wi-Fi. Each in its own segment with policy between them.
+                </p>
+              </div>
+            </li>
+            <li class="card p-5 flex gap-5">
+              <span class="font-mono text-[12.5px] text-signal pt-0.5 tabular-nums">03</span>
+              <div>
+                <h3 class="text-[16px] font-semibold text-txt">Lock the edge down</h3>
+                <p class="mt-1.5 text-[14.5px] text-mute leading-relaxed">
+                  Firewall policy written properly, remote access with MFA in front of it,
+                  and backups I've personally watched restore.
+                </p>
+              </div>
+            </li>
+            <li class="card p-5 flex gap-5">
+              <span class="font-mono text-[12.5px] text-signal pt-0.5 tabular-nums">04</span>
+              <div>
+                <h3 class="text-[16px] font-semibold text-txt">Check on it</h3>
+                <p class="mt-1.5 text-[14.5px] text-mute leading-relaxed">
+                  Logging that someone reads, and a periodic review. Configurations drift,
+                  staff turns over, and a firewall rule added "temporarily" tends to stay.
+                </p>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CERTIFICATIONS ===================== -->
+  <section id="certifications" class="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-20 scroll-mt-20">
+    <h2 class="text-3xl sm:text-4xl font-semibold text-txt">Certifications</h2>
+    <p class="mt-3 text-mute text-[15.5px] max-w-[56ch]">
+      Eleven, across networking, security, cloud, Linux and service management.
+    </p>
+
+    <div class="mt-9 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+
+      <article class="card card-hover p-5 flex flex-col items-center text-center">
+        <svg viewBox="0 0 48 54" width="46" height="52" aria-hidden="true">
+          <path d="M24 2 L45 14 V40 L24 52 L3 40 V14 Z" fill="rgba(240,162,60,.07)" stroke="#F0A23C" stroke-width="1.5" stroke-linejoin="round"/>
+          <text x="24" y="31" text-anchor="middle" fill="#F0A23C" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600">CCNA</text>
+        </svg>
+        <h3 class="mt-4 text-[15px] font-semibold text-txt leading-snug">CCNA</h3>
+        <p class="mt-1 font-mono text-[11.5px] text-mute">Cisco</p>
+      </article>
+
+      <article class="card card-hover p-5 flex flex-col items-center text-center">
+        <svg viewBox="0 0 48 54" width="46" height="52" aria-hidden="true">
+          <path d="M24 2 L45 14 V40 L24 52 L3 40 V14 Z" fill="rgba(240,162,60,.07)" stroke="#F0A23C" stroke-width="1.5" stroke-linejoin="round"/>
+          <text x="24" y="31" text-anchor="middle" fill="#F0A23C" font-family="IBM Plex Mono, monospace" font-size="10" font-weight="600">AUTO</text>
+        </svg>
+        <h3 class="mt-4 text-[15px] font-semibold text-txt leading-snug">CCNA Automation</h3>
+        <p class="mt-1 font-mono text-[11.5px] text-mute">Cisco</p>
+      </article>
+
+      <article class="card card-hover p-5 flex flex-col items-center text-center">
+        <svg viewBox="0 0 48 54" width="46" height="52" aria-hidden="true">
+          <path d="M24 2 L45 14 V40 L24 52 L3 40 V14 Z" fill="rgba(240,162,60,.07)" stroke="#F0A23C" stroke-width="1.5" stroke-linejoin="round"/>
+          <text x="24" y="31" text-anchor="middle" fill="#F0A23C" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600">ACE-A</text>
+        </svg>
+        <h3 class="mt-4 text-[15px] font-semibold text-txt leading-snug">ACE-A</h3>
+        <p class="mt-1 font-mono text-[11.5px] text-mute">Arista</p>
+      </article>
+
+      <article class="card card-hover p-5 flex flex-col items-center text-center">
+        <svg viewBox="0 0 48 54" width="46" height="52" aria-hidden="true">
+          <path d="M24 2 L45 14 V40 L24 52 L3 40 V14 Z" fill="rgba(240,162,60,.07)" stroke="#F0A23C" stroke-width="1.5" stroke-linejoin="round"/>
+          <text x="24" y="31" text-anchor="middle" fill="#F0A23C" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600">SAA</text>
+        </svg>
+        <h3 class="mt-4 text-[15px] font-semibold text-txt leading-snug">Solutions Architect &ndash; Associate</h3>
+        <p class="mt-1 font-mono text-[11.5px] text-mute">Amazon Web Services</p>
+      </article>
+
+      <article class="card card-hover p-5 flex flex-col items-center text-center">
+        <svg viewBox="0 0 48 54" width="46" height="52" aria-hidden="true">
+          <path d="M24 2 L45 14 V40 L24 52 L3 40 V14 Z" fill="rgba(240,162,60,.07)" stroke="#F0A23C" stroke-width="1.5" stroke-linejoin="round"/>
+          <text x="24" y="31" text-anchor="middle" fill="#F0A23C" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600">CCP</text>
+        </svg>
+        <h3 class="mt-4 text-[15px] font-semibold text-txt leading-snug">Cloud Practitioner</h3>
+        <p class="mt-1 font-mono text-[11.5px] text-mute">Amazon Web Services</p>
+      </article>
+
+      <article class="card card-hover p-5 flex flex-col items-center text-center">
+        <svg viewBox="0 0 48 54" width="46" height="52" aria-hidden="true">
+          <path d="M24 2 L45 14 V40 L24 52 L3 40 V14 Z" fill="rgba(240,162,60,.07)" stroke="#F0A23C" stroke-width="1.5" stroke-linejoin="round"/>
+          <text x="24" y="31" text-anchor="middle" fill="#F0A23C" font-family="IBM Plex Mono, monospace" font-size="14" font-weight="600">SEC+</text>
+        </svg>
+        <h3 class="mt-4 text-[15px] font-semibold text-txt leading-snug">Security+</h3>
+        <p class="mt-1 font-mono text-[11.5px] text-mute">CompTIA</p>
+      </article>
+
+      <article class="card card-hover p-5 flex flex-col items-center text-center">
+        <svg viewBox="0 0 48 54" width="46" height="52" aria-hidden="true">
+          <path d="M24 2 L45 14 V40 L24 52 L3 40 V14 Z" fill="rgba(240,162,60,.07)" stroke="#F0A23C" stroke-width="1.5" stroke-linejoin="round"/>
+          <text x="24" y="31" text-anchor="middle" fill="#F0A23C" font-family="IBM Plex Mono, monospace" font-size="14" font-weight="600">NET+</text>
+        </svg>
+        <h3 class="mt-4 text-[15px] font-semibold text-txt leading-snug">Network+</h3>
+        <p class="mt-1 font-mono text-[11.5px] text-mute">CompTIA</p>
+      </article>
+
+      <article class="card card-hover p-5 flex flex-col items-center text-center">
+        <svg viewBox="0 0 48 54" width="46" height="52" aria-hidden="true">
+          <path d="M24 2 L45 14 V40 L24 52 L3 40 V14 Z" fill="rgba(240,162,60,.07)" stroke="#F0A23C" stroke-width="1.5" stroke-linejoin="round"/>
+          <text x="24" y="31" text-anchor="middle" fill="#F0A23C" font-family="IBM Plex Mono, monospace" font-size="16" font-weight="600">A+</text>
+        </svg>
+        <h3 class="mt-4 text-[15px] font-semibold text-txt leading-snug">A+</h3>
+        <p class="mt-1 font-mono text-[11.5px] text-mute">CompTIA</p>
+      </article>
+
+      <article class="card card-hover p-5 flex flex-col items-center text-center">
+        <svg viewBox="0 0 48 54" width="46" height="52" aria-hidden="true">
+          <path d="M24 2 L45 14 V40 L24 52 L3 40 V14 Z" fill="rgba(240,162,60,.07)" stroke="#F0A23C" stroke-width="1.5" stroke-linejoin="round"/>
+          <text x="24" y="31" text-anchor="middle" fill="#F0A23C" font-family="IBM Plex Mono, monospace" font-size="12" font-weight="600">ITIL4</text>
+        </svg>
+        <h3 class="mt-4 text-[15px] font-semibold text-txt leading-snug">ITIL v4 Foundation</h3>
+        <p class="mt-1 font-mono text-[11.5px] text-mute">PeopleCert / AXELOS</p>
+      </article>
+
+      <article class="card card-hover p-5 flex flex-col items-center text-center">
+        <svg viewBox="0 0 48 54" width="46" height="52" aria-hidden="true">
+          <path d="M24 2 L45 14 V40 L24 52 L3 40 V14 Z" fill="rgba(240,162,60,.07)" stroke="#F0A23C" stroke-width="1.5" stroke-linejoin="round"/>
+          <text x="24" y="31" text-anchor="middle" fill="#F0A23C" font-family="IBM Plex Mono, monospace" font-size="13" font-weight="600">LPI</text>
+        </svg>
+        <h3 class="mt-4 text-[15px] font-semibold text-txt leading-snug">Linux Essentials</h3>
+        <p class="mt-1 font-mono text-[11.5px] text-mute">LPI</p>
+      </article>
+
+      <article class="card card-hover p-5 flex flex-col items-center text-center">
+        <svg viewBox="0 0 48 54" width="46" height="52" aria-hidden="true">
+          <path d="M24 2 L45 14 V40 L24 52 L3 40 V14 Z" fill="rgba(240,162,60,.07)" stroke="#F0A23C" stroke-width="1.5" stroke-linejoin="round"/>
+          <text x="24" y="31" text-anchor="middle" fill="#F0A23C" font-family="IBM Plex Mono, monospace" font-size="10" font-weight="600">PY-IT</text>
+        </svg>
+        <h3 class="mt-4 text-[15px] font-semibold text-txt leading-snug">Python for IT Automation</h3>
+        <p class="mt-1 font-mono text-[11.5px] text-mute">Certification</p>
+      </article>
+
+      <article class="card p-5 flex flex-col justify-center text-center bg-panel2">
+        <p class="eyebrow">In school</p>
+        <h3 class="mt-3 text-[15px] font-semibold text-txt leading-snug">B.S. Cloud &amp; Network Engineering</h3>
+        <p class="mt-1.5 font-mono text-[11.5px] text-mute">Western Governors University</p>
+        <p class="mt-1 font-mono text-[11.5px] text-mute">AWS track, finishing November 2026</p>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section id="contact" class="mx-auto max-w-6xl px-4 sm:px-6 py-16 sm:py-20 rule-top scroll-mt-20">
+    <div class="card p-8 sm:p-12">
+      <div class="grid lg:grid-cols-[1.15fr_1fr] gap-10 items-center">
+        <div>
+          <h2 class="text-3xl sm:text-4xl font-semibold text-txt">Get in touch</h2>
+          <p class="mt-4 text-[15.5px] text-mute leading-relaxed max-w-[52ch]">
+            I'm open to network and network security engineering roles, and I take on
+            SafeDays work for firms in and around San Antonio. If something on your network
+            keeps breaking and nobody can tell you why, that's the kind of thing I like.
+          </p>
+        </div>
+
+        <div class="grid gap-2.5">
+          <a href="mailto:jose@jdiaznetworks.com"
+             class="flex items-center justify-between gap-4 px-5 py-4 rounded border border-line hover:border-signal/45 group">
+            <span class="font-mono text-[13px] text-mute group-hover:text-txt">email</span>
+            <span class="font-mono text-[13px] text-txt">jose@jdiaznetworks.com</span>
+          </a>
+          <a href="https://www.linkedin.com/in/jose-diaz462" target="_blank" rel="noopener noreferrer"
+             class="flex items-center justify-between gap-4 px-5 py-4 rounded border border-line hover:border-signal/45 group">
+            <span class="font-mono text-[13px] text-mute group-hover:text-txt">linkedin</span>
+            <span class="font-mono text-[13px] text-txt">/in/jose-diaz462</span>
+          </a>
+          <a href="https://github.com/xbinarycodex" target="_blank" rel="noopener noreferrer"
+             class="flex items-center justify-between gap-4 px-5 py-4 rounded border border-line hover:border-signal/45 group">
+            <span class="font-mono text-[13px] text-mute group-hover:text-txt">github</span>
+            <span class="font-mono text-[13px] text-txt">xbinarycodex</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="mx-auto max-w-6xl px-4 sm:px-6 pb-14">
+    <div class="rule-top pt-6 flex flex-wrap items-center justify-between gap-3 font-mono text-[12px] text-mute">
+      <span>&copy; 2026 Jose Diaz &middot; San Antonio, TX</span>
+      <span>U.S. Army Reserve, 91B &middot; 2007&ndash;2015</span>
+    </div>
+  </footer>
+
+</main>
